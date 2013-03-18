@@ -17,7 +17,6 @@ function classMonitor()
   var now   = new Date(time.getTime() + 10000);
   sheet.getRange("D1").setValue(now);
   
-  // The script can monitor multiple website URLs (comma separated)
   var class = new Array();
   var status = new Array();
   class[0] = sheet.getRange("A7").getValue();
@@ -32,11 +31,10 @@ function classMonitor()
   class[3] = sheet.getRange("A10").getValue();
   status[3] = sheet.getRange("B10").getValue();
 
- 
-  for(var i=0; i<3; i++)
+  for(var i=0; i<4; i++)
   {
-    //cannot find
-    if(status[i].search("open") == -1) {
+    //cannot find open or wait, so must be closed
+    if(status[i].search("open") == -1 && status[i].search("wait") == -1) {
       status[i] = "closed";
    }
    else{
@@ -48,12 +46,12 @@ function classMonitor()
 }
  
 function updateLog(class, status) {  
-   
    //don't do anything if the class is closed
   if(status == "closed")
     return;
-    
-   var sheet = SpreadsheetApp.getActiveSheet();
+  
+  var sheet = SpreadsheetApp.getActiveSheet(); 
+   
   var time  = new Date();  
     
   var closed = "closed";
@@ -76,7 +74,6 @@ function updateLog(class, status) {
   {
     MailApp.sendEmail(phone, msg, "ursa.ucla.edu/");
   }
-  
   
   //MailApp.sendEmail(rowData.emailAddress, emailSubject, emailText);
   
